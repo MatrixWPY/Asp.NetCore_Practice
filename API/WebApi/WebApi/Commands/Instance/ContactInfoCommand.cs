@@ -53,6 +53,23 @@ namespace WebApi.Commands.Instance
                                                                   : SuccessRP(_contactInfoService.Query(objUpdate.ContactInfoID));
         }
 
+        public Result<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ)
+        {
+            var objOrigin = _contactInfoService.Query(objRQ.ID ?? 0);
+            var objUpdate = new ContactInfo()
+            {
+                ContactInfoID = objRQ.ID ?? 0,
+                Name = string.IsNullOrWhiteSpace(objRQ.Name) ? objOrigin.Name : objRQ.Name,
+                Nickname = string.IsNullOrWhiteSpace(objRQ.Nickname) ? objOrigin.Nickname : objRQ.Nickname,
+                Gender = (ContactInfo.EnumGender?)objRQ.Gender ?? objOrigin.Gender,
+                Age = objRQ.Age ?? objOrigin.Age,
+                PhoneNo = string.IsNullOrWhiteSpace(objRQ.PhoneNo) ? objOrigin.PhoneNo : objRQ.PhoneNo,
+                Address = string.IsNullOrWhiteSpace(objRQ.Address) ? objOrigin.Address : objRQ.Address
+            };
+            return _contactInfoService.Update(objUpdate) == false ? FailRP<ContactInfo>(3, "Edit Partial Fail")
+                                                                  : SuccessRP(_contactInfoService.Query(objUpdate.ContactInfoID));
+        }
+
         public Result<bool> DeleteByID(IEnumerable<long> liID)
         {
             var res = _contactInfoService.Delete(liID);

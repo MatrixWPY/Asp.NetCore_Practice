@@ -8,44 +8,44 @@ using WebApi.Models.Response;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ValidRequest]
     [ApiController]
-    public class ContactInfoController : ControllerBase
+    public class ContactInfoRestfulController : ControllerBase
     {
         private readonly IContactInfoCommand _contactInfoCommand;
 
-        public ContactInfoController(IContactInfoCommand contactInfoCommand)
+        public ContactInfoRestfulController(IContactInfoCommand contactInfoCommand)
         {
             _contactInfoCommand = contactInfoCommand;
         }
 
-        [HttpPost]
-        public Result<ContactInfo> QueryContactInfo(IdRQ objRQ)
+        [HttpGet]
+        public Result<ContactInfo> Get(IdRQ objRQ)
         {
             return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
         }
 
         [HttpPost]
-        public Result<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
+        public Result<ContactInfo> Post(ContactInfoAddRQ objRQ)
         {
             return _contactInfoCommand.Add(objRQ);
         }
 
-        [HttpPost]
-        public Result<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
+        [HttpPut]
+        public Result<ContactInfo> Put(ContactInfoEditRQ objRQ)
         {
             return _contactInfoCommand.Edit(objRQ);
         }
 
-        [HttpPost]
-        public Result<ContactInfo> EditPartialContactInfo(ContactInfoEditPartialRQ objRQ)
+        [HttpPatch]
+        public Result<ContactInfo> Patch(ContactInfoEditPartialRQ objRQ)
         {
             return _contactInfoCommand.EditPartial(objRQ);
         }
 
-        [HttpPost]
-        public Result<bool> DeleteContactInfo(IdRQ objRQ)
+        [HttpDelete]
+        public Result<bool> Delete(IdRQ objRQ)
         {
             return _contactInfoCommand.DeleteByID(new List<long>() { objRQ.ID ?? 0 });
         }

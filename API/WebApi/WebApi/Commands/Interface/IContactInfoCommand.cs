@@ -13,6 +13,8 @@ namespace WebApi.Commands.Interface
 
         Result<ContactInfo> Edit(ContactInfoEditRQ objRQ);
 
+        Result<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ);
+
         Result<bool> DeleteByID(IEnumerable<long> liID);
     }
 }
