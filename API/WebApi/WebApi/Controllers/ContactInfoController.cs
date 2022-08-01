@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using WebApi.Commands.Interface;
+using WebApi.Filters;
 using WebApi.Models.Data;
 using WebApi.Models.Request;
 using WebApi.Models.Response;
@@ -8,6 +9,7 @@ using WebApi.Models.Response;
 namespace WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [ValidRequest]
     [ApiController]
     public class ContactInfoController : ControllerBase
     {

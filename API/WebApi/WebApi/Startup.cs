@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,12 @@ namespace WebApi
             #region 註冊Service
             services.AddTransient<IContactInfoService, ContactInfoService>();
             #endregion
+
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                // 停用ModelStateInvalidFilter => 使用自訂ValidFilter:ValidRequest
+                opt.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
