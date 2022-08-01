@@ -49,8 +49,6 @@ namespace WebApi.Services.Instance
 
                 using (var db = new SqlConnection(_connectString))
                 {
-                    //return db.Execute(sbSQL.ToString(), objContactInfo) > 0;
-
                     objContactInfo.ContactInfoID = db.ExecuteScalar<long?>(sbSQL.ToString(), objContactInfo) ?? 0;
                     return objContactInfo.ContactInfoID > 0;
                 }

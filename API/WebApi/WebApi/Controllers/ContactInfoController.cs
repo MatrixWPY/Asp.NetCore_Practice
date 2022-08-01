@@ -27,13 +27,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public Result<bool> AddContactInfo(ContactInfoAddRQ objRQ)
+        public Result<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
         {
             return _contactInfoCommand.Add(objRQ);
         }
 
         [HttpPost]
-        public Result<bool> EditContactInfo(ContactInfoEditRQ objRQ)
+        public Result<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
         {
             return _contactInfoCommand.Edit(objRQ);
         }

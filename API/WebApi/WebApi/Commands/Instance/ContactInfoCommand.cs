@@ -22,9 +22,9 @@ namespace WebApi.Commands.Instance
             return res == null ? FailRP<ContactInfo>(1, "No Data") : SuccessRP(res);
         }
 
-        public Result<bool> Add(ContactInfoAddRQ objRQ)
+        public Result<ContactInfo> Add(ContactInfoAddRQ objRQ)
         {
-            var res = _contactInfoService.Insert(new ContactInfo()
+            var objInsert = new ContactInfo()
             {
                 Name = objRQ.Name,
                 Nickname = objRQ.Nickname,
@@ -32,13 +32,14 @@ namespace WebApi.Commands.Instance
                 Age = objRQ.Age,
                 PhoneNo = objRQ.PhoneNo,
                 Address = objRQ.Address
-            });
-            return res == false ? FailRP<bool>(2, "Add Fail") : SuccessRP(res);
+            };
+            return _contactInfoService.Insert(objInsert) == false ? FailRP<ContactInfo>(2, "Add Fail")
+                                                                  : SuccessRP(_contactInfoService.Query(objInsert.ContactInfoID));
         }
 
-        public Result<bool> Edit(ContactInfoEditRQ objRQ)
+        public Result<ContactInfo> Edit(ContactInfoEditRQ objRQ)
         {
-            var res = _contactInfoService.Update(new ContactInfo()
+            var objUpdate = new ContactInfo()
             {
                 ContactInfoID = objRQ.ID ?? 0,
                 Name = objRQ.Name,
@@ -47,8 +48,9 @@ namespace WebApi.Commands.Instance
                 Age = objRQ.Age,
                 PhoneNo = objRQ.PhoneNo,
                 Address = objRQ.Address
-            });
-            return res == false ? FailRP<bool>(3, "Edit Fail") : SuccessRP(res);
+            };
+            return _contactInfoService.Update(objUpdate) == false ? FailRP<ContactInfo>(3, "Edit Fail")
+                                                                  : SuccessRP(_contactInfoService.Query(objUpdate.ContactInfoID));
         }
 
         public Result<bool> DeleteByID(IEnumerable<long> liID)

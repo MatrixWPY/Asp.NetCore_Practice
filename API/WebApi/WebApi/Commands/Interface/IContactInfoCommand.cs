@@ -9,9 +9,9 @@ namespace WebApi.Commands.Interface
     {
         Result<ContactInfo> QueryByID(long id);
 
-        Result<bool> Add(ContactInfoAddRQ objRQ);
+        Result<ContactInfo> Add(ContactInfoAddRQ objRQ);
 
-        Result<bool> Edit(ContactInfoEditRQ objRQ);
+        Result<ContactInfo> Edit(ContactInfoEditRQ objRQ);
 
         Result<bool> DeleteByID(IEnumerable<long> liID);
     }
