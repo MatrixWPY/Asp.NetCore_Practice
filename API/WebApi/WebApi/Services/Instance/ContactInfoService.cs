@@ -38,6 +38,53 @@ namespace WebApi.Services.Instance
             }
         }
 
+        public IEnumerable<ContactInfo> Query(Dictionary<string, object> dicParams)
+        {
+            try
+            {
+                var sbSQL = new StringBuilder();
+                sbSQL.AppendLine("SELECT * FROM Tbl_ContactInfo");
+                sbSQL.AppendLine("WHERE 1 = 1");
+
+                #region [Query Condition]
+                foreach (var key in dicParams.Keys)
+                {
+                    switch (key)
+                    {
+                        case "Name":
+                            sbSQL.AppendLine("AND Name = @Name");
+                            break;
+
+                        case "Nickname":
+                            sbSQL.AppendLine("AND Nickname LIKE @Nickname");
+                            break;
+
+                        case "Gender":
+                            sbSQL.AppendLine("AND Gender = @Gender");
+                            break;
+                    }
+                }
+                #endregion
+
+                #region [Order]
+                sbSQL.AppendLine("ORDER BY ContactInfoID DESC");
+                #endregion
+
+                #region[Paging]
+                sbSQL.AppendLine("OFFSET @RowStart ROWS FETCH NEXT @RowLength ROWS ONLY");
+                #endregion
+
+                using (var db = new SqlConnection(_connectString))
+                {
+                    return db.Query<ContactInfo>(sbSQL.ToString(), dicParams);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool Insert(ContactInfo objContactInfo)
         {
             try

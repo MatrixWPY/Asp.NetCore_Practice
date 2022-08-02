@@ -9,6 +9,8 @@ namespace WebApi.Commands.Interface
     {
         Result<ContactInfo> QueryByID(long id);
 
+        Result<IEnumerable<ContactInfo>> QueryByCondition(ContactInfoQueryRQ objRQ);
+
         Result<ContactInfo> Add(ContactInfoAddRQ objRQ);
 
         Result<ContactInfo> Edit(ContactInfoEditRQ objRQ);

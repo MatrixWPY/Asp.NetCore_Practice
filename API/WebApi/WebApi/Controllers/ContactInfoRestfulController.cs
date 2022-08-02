@@ -26,6 +26,12 @@ namespace WebApi.Controllers
             return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
         }
 
+        //[HttpGet]
+        //public Result<IEnumerable<ContactInfo>> Get(ContactInfoQueryRQ objRQ)
+        //{
+        //    return _contactInfoCommand.QueryByCondition(objRQ);
+        //}
+
         [HttpPost]
         public Result<ContactInfo> Post(ContactInfoAddRQ objRQ)
         {

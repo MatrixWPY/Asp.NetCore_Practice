@@ -21,9 +21,15 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public Result<ContactInfo> QueryContactInfo(IdRQ objRQ)
+        public Result<ContactInfo> GetContactInfo(IdRQ objRQ)
         {
             return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
+        }
+
+        [HttpPost]
+        public Result<IEnumerable<ContactInfo>> ListContactInfo(ContactInfoQueryRQ objRQ)
+        {
+            return _contactInfoCommand.QueryByCondition(objRQ);
         }
 
         [HttpPost]

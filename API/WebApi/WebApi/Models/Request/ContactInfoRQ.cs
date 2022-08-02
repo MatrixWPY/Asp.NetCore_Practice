@@ -3,6 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models.Request
 {
+    public class ContactInfoQueryRQ : PageRQ
+    {
+        [MaxLength(10, ErrorMessage = "{0} 限定最大長度為10。")]
+        public string Name { get; set; }
+
+        [MaxLength(10, ErrorMessage = "{0} 限定最大長度為10。")]
+        public string Nickname { get; set; }
+
+        [Range(0, 1, ErrorMessage = "{0} 限定為0或1。")]
+        public int? Gender { get; set; }
+    }
+
     public class ContactInfoAddRQ
     {
         [Required(ErrorMessage = "{0} 為必填欄位。")]

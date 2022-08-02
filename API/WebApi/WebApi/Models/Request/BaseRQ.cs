@@ -10,8 +10,19 @@ namespace WebApi.Models.Request
 
     public class PageRQ
     {
-        public int PageIndex { get; set; } = 1;
+        private int _PageIndex = 1;
+        private int _PageSize = 10;
 
-        public int PageSize { get; set; } = 10;
+        public int PageIndex
+        {
+            get => _PageIndex;
+            set => _PageIndex = (value < 1 ? 1 : value);
+        }
+
+        public int PageSize
+        {
+            get => _PageSize;
+            set => _PageSize = (value < 1 ? 10 : value);
+        }
     }
 }

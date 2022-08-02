@@ -22,6 +22,28 @@ namespace WebApi.Commands.Instance
             return res == null ? FailRP<ContactInfo>(1, "No Data") : SuccessRP(res);
         }
 
+        public Result<IEnumerable<ContactInfo>> QueryByCondition(ContactInfoQueryRQ objRQ)
+        {
+            Dictionary<string, object> dicParams = new Dictionary<string, object>();
+            if (string.IsNullOrWhiteSpace(objRQ.Name) == false)
+            {
+                dicParams["Name"] = objRQ.Name;
+            }
+            if (string.IsNullOrWhiteSpace(objRQ.Nickname) == false)
+            {
+                dicParams["Nickname"] = $"%{objRQ.Nickname}%";
+            }
+            if (objRQ.Gender.HasValue)
+            {
+                dicParams["Gender"] = objRQ.Gender;
+            }
+            dicParams["RowStart"] = (objRQ.PageIndex - 1) * objRQ.PageSize;
+            dicParams["RowLength"] = objRQ.PageSize;
+
+            var res = _contactInfoService.Query(dicParams);
+            return res == null ? FailRP<IEnumerable<ContactInfo>>(1, "No Data") : SuccessRP(res);
+        }
+
         public Result<ContactInfo> Add(ContactInfoAddRQ objRQ)
         {
             var objInsert = new ContactInfo()
