@@ -20,40 +20,58 @@ namespace WebApi.Controllers
             _contactInfoCommand = contactInfoCommand;
         }
 
-        [HttpGet]
-        public Result<ContactInfo> Get(IdRQ objRQ)
+        [HttpGet, Route("{id}")]
+        public Result<ContactInfo> Get(long id)
         {
-            return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
+            return _contactInfoCommand.QueryByID(id);
         }
 
-        //[HttpGet]
-        //public Result<IEnumerable<ContactInfo>> Get(ContactInfoQueryRQ objRQ)
-        //{
-        //    return _contactInfoCommand.QueryByCondition(objRQ);
-        //}
+        [HttpGet]
+        public Result<IEnumerable<ContactInfo>> Get([FromBody] ContactInfoQueryRQ objRQ)
+        {
+            return _contactInfoCommand.QueryByCondition(objRQ);
+        }
 
         [HttpPost]
-        public Result<ContactInfo> Post(ContactInfoAddRQ objRQ)
+        public Result<ContactInfo> Post([FromBody] ContactInfoAddRQ objRQ)
         {
             return _contactInfoCommand.Add(objRQ);
         }
 
-        [HttpPut]
-        public Result<ContactInfo> Put(ContactInfoEditRQ objRQ)
+        [HttpPut, Route("{id}")]
+        public Result<ContactInfo> Put(long id, [FromBody] ContactInfoRestfulEditRQ objRQ)
         {
-            return _contactInfoCommand.Edit(objRQ);
+            return _contactInfoCommand.Edit(new ContactInfoEditRQ()
+            {
+                ID = id,
+                Name = objRQ.Name,
+                Nickname = objRQ.Nickname,
+                Gender = objRQ.Gender,
+                Age = objRQ.Age,
+                PhoneNo = objRQ.PhoneNo,
+                Address = objRQ.Address
+            });
         }
 
-        [HttpPatch]
-        public Result<ContactInfo> Patch(ContactInfoEditPartialRQ objRQ)
+        [HttpPatch, Route("{id}")]
+        public Result<ContactInfo> Patch(long id, [FromBody] ContactInfoRestfulEditPartialRQ objRQ)
         {
-            return _contactInfoCommand.EditPartial(objRQ);
+            return _contactInfoCommand.EditPartial(new ContactInfoEditPartialRQ()
+            {
+                ID = id,
+                Name = objRQ.Name,
+                Nickname = objRQ.Nickname,
+                Gender = objRQ.Gender,
+                Age = objRQ.Age,
+                PhoneNo = objRQ.PhoneNo,
+                Address = objRQ.Address
+            });
         }
 
-        [HttpDelete]
-        public Result<bool> Delete(IdRQ objRQ)
+        [HttpDelete, Route("{id}")]
+        public Result<bool> Delete(long id)
         {
-            return _contactInfoCommand.DeleteByID(new List<long>() { objRQ.ID ?? 0 });
+            return _contactInfoCommand.DeleteByID(new List<long>() { id });
         }
     }
 }

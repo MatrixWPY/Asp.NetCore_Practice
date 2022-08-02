@@ -61,6 +61,12 @@ namespace WebApi.Commands.Instance
 
         public Result<ContactInfo> Edit(ContactInfoEditRQ objRQ)
         {
+            var objOrigin = _contactInfoService.Query(objRQ.ID ?? 0);
+            if (objOrigin == null)
+            {
+                return FailRP<ContactInfo>(1, "No Data");
+            }
+
             var objUpdate = new ContactInfo()
             {
                 ContactInfoID = objRQ.ID ?? 0,
@@ -78,6 +84,11 @@ namespace WebApi.Commands.Instance
         public Result<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ)
         {
             var objOrigin = _contactInfoService.Query(objRQ.ID ?? 0);
+            if (objOrigin == null)
+            {
+                return FailRP<ContactInfo>(1, "No Data");
+            }
+
             var objUpdate = new ContactInfo()
             {
                 ContactInfoID = objRQ.ID ?? 0,
