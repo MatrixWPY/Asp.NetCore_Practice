@@ -17,7 +17,7 @@ namespace WebApi.Filters
                     {
                         Code = -1,
                         Msg = "Valid Error",
-                        Data = context.ModelState.SelectMany(e => e.Value.Errors.Select(f => f.ErrorMessage))
+                        Result = context.ModelState.SelectMany(e => e.Value.Errors.Select(f => f.ErrorMessage))
                     }
                 );
             }

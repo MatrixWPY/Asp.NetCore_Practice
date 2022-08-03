@@ -7,7 +7,7 @@ namespace WebApi.Services.Interface
     {
         ContactInfo Query(long id);
 
-        IEnumerable<ContactInfo> Query(Dictionary<string, object> dicParams);
+        (int, IEnumerable<ContactInfo>) Query(Dictionary<string, object> dicParams);
 
         bool Insert(ContactInfo objContactInfo);
 

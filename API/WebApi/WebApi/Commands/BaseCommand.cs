@@ -4,19 +4,19 @@ namespace WebApi.Commands
 {
     public class BaseCommand
     {
-        public Result<T> SuccessRP<T>(T data)
+        public ApiResult<T> SuccessRP<T>(T result)
         {
-            return new Result<T>()
+            return new ApiResult<T>()
             {
                 Code = 0,
                 Msg = "Success",
-                Data = data
+                Result = result
             };
         }
 
-        public Result<T> FailRP<T>(int errorCode, string errorMsg)
+        public ApiResult<T> FailRP<T>(int errorCode, string errorMsg)
         {
-            return new Result<T>()
+            return new ApiResult<T>()
             {
                 Code = errorCode,
                 Msg = errorMsg

@@ -7,16 +7,16 @@ namespace WebApi.Commands.Interface
 {
     public interface IContactInfoCommand
     {
-        Result<ContactInfo> QueryByID(long id);
+        ApiResult<ContactInfo> QueryByID(long id);
 
-        Result<IEnumerable<ContactInfo>> QueryByCondition(ContactInfoQueryRQ objRQ);
+        ApiResult<PageData<IEnumerable<ContactInfo>>> QueryByCondition(ContactInfoQueryRQ objRQ);
 
-        Result<ContactInfo> Add(ContactInfoAddRQ objRQ);
+        ApiResult<ContactInfo> Add(ContactInfoAddRQ objRQ);
 
-        Result<ContactInfo> Edit(ContactInfoEditRQ objRQ);
+        ApiResult<ContactInfo> Edit(ContactInfoEditRQ objRQ);
 
-        Result<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ);
+        ApiResult<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ);
 
-        Result<bool> DeleteByID(IEnumerable<long> liID);
+        ApiResult<bool> DeleteByID(IEnumerable<long> liID);
     }
 }

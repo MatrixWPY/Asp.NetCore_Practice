@@ -21,37 +21,37 @@ namespace WebApi.Controllers
         }
 
         [HttpPost, Route("C101")]
-        public Result<ContactInfo> GetContactInfo(IdRQ objRQ)
+        public ApiResult<ContactInfo> GetContactInfo(IdRQ objRQ)
         {
             return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
         }
 
         [HttpPost, Route("C102")]
-        public Result<IEnumerable<ContactInfo>> ListContactInfo(ContactInfoQueryRQ objRQ)
+        public ApiResult<PageData<IEnumerable<ContactInfo>>> ListContactInfo(ContactInfoQueryRQ objRQ)
         {
             return _contactInfoCommand.QueryByCondition(objRQ);
         }
 
         [HttpPost, Route("C103")]
-        public Result<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
+        public ApiResult<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
         {
             return _contactInfoCommand.Add(objRQ);
         }
 
         [HttpPost, Route("C104")]
-        public Result<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
+        public ApiResult<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
         {
             return _contactInfoCommand.Edit(objRQ);
         }
 
         [HttpPost, Route("C105")]
-        public Result<ContactInfo> EditPartialContactInfo(ContactInfoEditPartialRQ objRQ)
+        public ApiResult<ContactInfo> EditPartialContactInfo(ContactInfoEditPartialRQ objRQ)
         {
             return _contactInfoCommand.EditPartial(objRQ);
         }
 
         [HttpPost, Route("C106")]
-        public Result<bool> DeleteContactInfo(IdRQ objRQ)
+        public ApiResult<bool> DeleteContactInfo(IdRQ objRQ)
         {
             return _contactInfoCommand.DeleteByID(new List<long>() { objRQ.ID ?? 0 });
         }

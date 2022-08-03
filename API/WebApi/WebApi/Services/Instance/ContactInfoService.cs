@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using WebApi.Models.Data;
 using WebApi.Services.Interface;
@@ -38,13 +39,14 @@ namespace WebApi.Services.Instance
             }
         }
 
-        public IEnumerable<ContactInfo> Query(Dictionary<string, object> dicParams)
+        public (int, IEnumerable<ContactInfo>) Query(Dictionary<string, object> dicParams)
         {
             try
             {
-                var sbSQL = new StringBuilder();
-                sbSQL.AppendLine("SELECT * FROM Tbl_ContactInfo");
-                sbSQL.AppendLine("WHERE 1 = 1");
+                var sbCnt = new StringBuilder();
+                sbCnt.AppendLine("SELECT COUNT(1) FROM Tbl_ContactInfo WHERE 1 = 1");
+                var sbQuery = new StringBuilder();
+                sbQuery.AppendLine("SELECT * FROM Tbl_ContactInfo WHERE 1 = 1");
 
                 #region [Query Condition]
                 foreach (var key in dicParams.Keys)
@@ -52,31 +54,35 @@ namespace WebApi.Services.Instance
                     switch (key)
                     {
                         case "Name":
-                            sbSQL.AppendLine("AND Name = @Name");
+                            sbCnt.AppendLine("AND Name = @Name");
+                            sbQuery.AppendLine("AND Name = @Name");
                             break;
 
                         case "Nickname":
-                            sbSQL.AppendLine("AND Nickname LIKE @Nickname");
+                            sbCnt.AppendLine("AND Nickname LIKE @Nickname");
+                            sbQuery.AppendLine("AND Nickname LIKE @Nickname");
                             break;
 
                         case "Gender":
-                            sbSQL.AppendLine("AND Gender = @Gender");
+                            sbCnt.AppendLine("AND Gender = @Gender");
+                            sbQuery.AppendLine("AND Gender = @Gender");
                             break;
                     }
                 }
                 #endregion
 
                 #region [Order]
-                sbSQL.AppendLine("ORDER BY ContactInfoID DESC");
+                sbQuery.AppendLine("ORDER BY ContactInfoID DESC");
                 #endregion
 
                 #region[Paging]
-                sbSQL.AppendLine("OFFSET @RowStart ROWS FETCH NEXT @RowLength ROWS ONLY");
+                sbQuery.AppendLine("OFFSET @RowStart ROWS FETCH NEXT @RowLength ROWS ONLY");
                 #endregion
 
                 using (var db = new SqlConnection(_connectString))
                 {
-                    return db.Query<ContactInfo>(sbSQL.ToString(), dicParams);
+                    var res = db.QueryMultiple(sbCnt.ToString() + sbQuery.ToString(), dicParams);
+                    return (res.Read<int>().FirstOrDefault(), res.Read<ContactInfo>());
                 }
             }
             catch (Exception ex)
