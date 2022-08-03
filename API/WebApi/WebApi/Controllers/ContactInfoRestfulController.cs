@@ -44,7 +44,7 @@ namespace WebApi.Controllers
         /// <param name="objRQ"></param>
         /// <returns></returns>
         [HttpGet]
-        public ApiResultRP<PageDataRP<IEnumerable<ContactInfo>>> Get([FromBody] ContactInfoQueryRQ objRQ)
+        public ApiResultRP<PageDataRP<IEnumerable<ContactInfo>>> Get([FromQuery] ContactInfoQueryRQ objRQ)
         {
             return _contactInfoCommand.QueryByCondition(objRQ);
         }
