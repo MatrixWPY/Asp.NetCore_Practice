@@ -8,22 +8,39 @@ using WebApi.Services.Interface;
 
 namespace WebApi.Commands.Instance
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ContactInfoCommand : BaseCommand, IContactInfoCommand
     {
         private readonly IContactInfoService _contactInfoService;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contactInfoService"></param>
         public ContactInfoCommand(IContactInfoService contactInfoService)
         {
             _contactInfoService = contactInfoService;
         }
 
-        public ApiResult<ContactInfo> QueryByID(long id)
+        /// <summary>
+        /// 單筆查詢
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ApiResultRP<ContactInfo> QueryByID(long id)
         {
             var res = _contactInfoService.Query(id);
             return res == null ? FailRP<ContactInfo>(1, "No Data") : SuccessRP(res);
         }
 
-        public ApiResult<PageData<IEnumerable<ContactInfo>>> QueryByCondition(ContactInfoQueryRQ objRQ)
+        /// <summary>
+        /// 多筆查詢
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
+        public ApiResultRP<PageDataRP<IEnumerable<ContactInfo>>> QueryByCondition(ContactInfoQueryRQ objRQ)
         {
             Dictionary<string, object> dicParams = new Dictionary<string, object>();
             if (string.IsNullOrWhiteSpace(objRQ.Name) == false)
@@ -42,10 +59,10 @@ namespace WebApi.Commands.Instance
             dicParams["RowLength"] = objRQ.PageSize;
 
             var res = _contactInfoService.Query(dicParams);
-            return res.Item2 == null ? FailRP<PageData<IEnumerable<ContactInfo>>>(1, "No Data")
-                                     : SuccessRP(new PageData<IEnumerable<ContactInfo>>()
+            return res.Item2 == null ? FailRP<PageDataRP<IEnumerable<ContactInfo>>>(1, "No Data")
+                                     : SuccessRP(new PageDataRP<IEnumerable<ContactInfo>>()
                                        {
-                                           PageInfo = new PageRP()
+                                           PageInfo = new PageInfoRP()
                                            {
                                                PageIndex = objRQ.PageIndex,
                                                PageSize = res.Item2.Count(),
@@ -56,7 +73,12 @@ namespace WebApi.Commands.Instance
                                        });
         }
 
-        public ApiResult<ContactInfo> Add(ContactInfoAddRQ objRQ)
+        /// <summary>
+        /// 新增資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
+        public ApiResultRP<ContactInfo> Add(ContactInfoAddRQ objRQ)
         {
             var objInsert = new ContactInfo()
             {
@@ -71,7 +93,12 @@ namespace WebApi.Commands.Instance
                                                                   : SuccessRP(_contactInfoService.Query(objInsert.ContactInfoID));
         }
 
-        public ApiResult<ContactInfo> Edit(ContactInfoEditRQ objRQ)
+        /// <summary>
+        /// 修改資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
+        public ApiResultRP<ContactInfo> Edit(ContactInfoEditRQ objRQ)
         {
             var objOrigin = _contactInfoService.Query(objRQ.ID ?? 0);
             if (objOrigin == null)
@@ -93,7 +120,12 @@ namespace WebApi.Commands.Instance
                                                                   : SuccessRP(_contactInfoService.Query(objUpdate.ContactInfoID));
         }
 
-        public ApiResult<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ)
+        /// <summary>
+        /// 部分修改資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
+        public ApiResultRP<ContactInfo> EditPartial(ContactInfoEditPartialRQ objRQ)
         {
             var objOrigin = _contactInfoService.Query(objRQ.ID ?? 0);
             if (objOrigin == null)
@@ -115,7 +147,12 @@ namespace WebApi.Commands.Instance
                                                                   : SuccessRP(_contactInfoService.Query(objUpdate.ContactInfoID));
         }
 
-        public ApiResult<bool> DeleteByID(IEnumerable<long> liID)
+        /// <summary>
+        /// 刪除資料
+        /// </summary>
+        /// <param name="liID"></param>
+        /// <returns></returns>
+        public ApiResultRP<bool> DeleteByID(IEnumerable<long> liID)
         {
             var res = _contactInfoService.Delete(liID);
             return res == false ? FailRP<bool>(4, "Delete Fail") : SuccessRP(res);

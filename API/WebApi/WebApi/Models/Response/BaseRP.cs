@@ -1,22 +1,48 @@
 ﻿namespace WebApi.Models.Response
 {
-    public class ApiResult<T>
+    /// <summary>
+    /// 傳出參數 - API回傳格式
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ApiResultRP<T>
     {
+        /// <summary>
+        /// 回傳代碼
+        /// </summary>
         public int Code { get; set; }
 
+        /// <summary>
+        /// 回傳訊息
+        /// </summary>
         public string Msg { get; set; }
 
+        /// <summary>
+        /// 回傳資料
+        /// </summary>
         public T Result { get; set; }
     }
 
-    public class PageData<T>
+    /// <summary>
+    /// 傳出參數 - 分頁資料
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class PageDataRP<T>
     {
-        public PageRP PageInfo { get; set; }
+        /// <summary>
+        /// 分頁資訊
+        /// </summary>
+        public PageInfoRP PageInfo { get; set; }
 
+        /// <summary>
+        /// 資料物件
+        /// </summary>
         public T Data { get; set; }
     }
 
-    public class PageRP
+    /// <summary>
+    /// 傳出參數 - 分頁資訊
+    /// </summary>
+    public class PageInfoRP
     {
         /// <summary>
         /// 分頁頁碼

@@ -5,8 +5,15 @@ using System.Linq;
 
 namespace WebApi.Filters
 {
+    /// <summary>
+    /// API傳入參數驗證
+    /// </summary>
     public class ValidRequestAttribute : Attribute, IActionFilter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ModelState.IsValid == false)
@@ -23,6 +30,10 @@ namespace WebApi.Filters
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
 

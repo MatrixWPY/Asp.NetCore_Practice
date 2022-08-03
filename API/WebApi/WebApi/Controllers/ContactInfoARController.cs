@@ -8,6 +8,9 @@ using WebApi.Models.Response;
 
 namespace WebApi.Controllers
 {
+    /// <summary>
+    /// ContactInfo AttributeRoute WebAPI
+    /// </summary>
     [Route("V1")]
     [ValidRequest]
     [ApiController]
@@ -15,43 +18,77 @@ namespace WebApi.Controllers
     {
         private readonly IContactInfoCommand _contactInfoCommand;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contactInfoCommand"></param>
         public ContactInfoARController(IContactInfoCommand contactInfoCommand)
         {
             _contactInfoCommand = contactInfoCommand;
         }
 
+        /// <summary>
+        /// ContactInfo - 單筆查詢
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C101")]
-        public ApiResult<ContactInfo> GetContactInfo(IdRQ objRQ)
+        public ApiResultRP<ContactInfo> GetContactInfo(IdRQ objRQ)
         {
             return _contactInfoCommand.QueryByID(objRQ.ID ?? 0);
         }
 
+        /// <summary>
+        /// ContactInfo - 多筆查詢
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C102")]
-        public ApiResult<PageData<IEnumerable<ContactInfo>>> ListContactInfo(ContactInfoQueryRQ objRQ)
+        public ApiResultRP<PageDataRP<IEnumerable<ContactInfo>>> ListContactInfo(ContactInfoQueryRQ objRQ)
         {
             return _contactInfoCommand.QueryByCondition(objRQ);
         }
 
+        /// <summary>
+        /// ContactInfo - 新增資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C103")]
-        public ApiResult<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
+        public ApiResultRP<ContactInfo> AddContactInfo(ContactInfoAddRQ objRQ)
         {
             return _contactInfoCommand.Add(objRQ);
         }
 
+        /// <summary>
+        /// ContactInfo - 修改資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C104")]
-        public ApiResult<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
+        public ApiResultRP<ContactInfo> EditContactInfo(ContactInfoEditRQ objRQ)
         {
             return _contactInfoCommand.Edit(objRQ);
         }
 
+        /// <summary>
+        /// ContactInfo - 部分修改資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C105")]
-        public ApiResult<ContactInfo> EditPartialContactInfo(ContactInfoEditPartialRQ objRQ)
+        public ApiResultRP<ContactInfo> EditPartialContactInfo(ContactInfoEditPartialRQ objRQ)
         {
             return _contactInfoCommand.EditPartial(objRQ);
         }
 
+        /// <summary>
+        /// ContactInfo - 刪除資料
+        /// </summary>
+        /// <param name="objRQ"></param>
+        /// <returns></returns>
         [HttpPost, Route("C106")]
-        public ApiResult<bool> DeleteContactInfo(IdRQ objRQ)
+        public ApiResultRP<bool> DeleteContactInfo(IdRQ objRQ)
         {
             return _contactInfoCommand.DeleteByID(new List<long>() { objRQ.ID ?? 0 });
         }

@@ -10,15 +10,27 @@ using WebApi.Services.Interface;
 
 namespace WebApi.Services.Instance
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ContactInfoService : IContactInfoService
     {
         private readonly string _connectString;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public ContactInfoService(IConfiguration configuration)
         {
             _connectString = configuration.GetValue<string>("ConnectionStrings:MsSql");
         }
 
+        /// <summary>
+        /// 查詢
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ContactInfo Query(long id)
         {
             try
@@ -39,6 +51,11 @@ namespace WebApi.Services.Instance
             }
         }
 
+        /// <summary>
+        /// 查詢
+        /// </summary>
+        /// <param name="dicParams"></param>
+        /// <returns></returns>
         public (int, IEnumerable<ContactInfo>) Query(Dictionary<string, object> dicParams)
         {
             try
@@ -91,6 +108,11 @@ namespace WebApi.Services.Instance
             }
         }
 
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="objContactInfo"></param>
+        /// <returns></returns>
         public bool Insert(ContactInfo objContactInfo)
         {
             try
@@ -112,6 +134,11 @@ namespace WebApi.Services.Instance
             }
         }
 
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="objContactInfo"></param>
+        /// <returns></returns>
         public bool Update(ContactInfo objContactInfo)
         {
             try
@@ -132,6 +159,11 @@ namespace WebApi.Services.Instance
             }
         }
 
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        /// <param name="liID"></param>
+        /// <returns></returns>
         public bool Delete(IEnumerable<long> liID)
         {
             try
