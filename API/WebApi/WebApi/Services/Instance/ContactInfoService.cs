@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -15,14 +16,17 @@ namespace WebApi.Services.Instance
     /// </summary>
     public class ContactInfoService : IContactInfoService
     {
+        private readonly ILogger<ContactInfoService> _logger;
         private readonly string _connectString;
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="logger"></param>
         /// <param name="configuration"></param>
-        public ContactInfoService(IConfiguration configuration)
+        public ContactInfoService(ILogger<ContactInfoService> logger, IConfiguration configuration)
         {
+            _logger = logger;
             _connectString = configuration.GetValue<string>("ConnectionStrings:MsSql");
         }
 
@@ -47,7 +51,8 @@ namespace WebApi.Services.Instance
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex, $"Query Fail : {ex.Message}");
+                return null;
             }
         }
 
@@ -104,7 +109,8 @@ namespace WebApi.Services.Instance
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex, $"Query Fail : {ex.Message}");
+                return (0, null);
             }
         }
 
@@ -130,7 +136,8 @@ namespace WebApi.Services.Instance
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex, $"Insert Fail : {ex.Message}");
+                return false;
             }
         }
 
@@ -155,7 +162,8 @@ namespace WebApi.Services.Instance
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex, $"Update Fail : {ex.Message}");
+                return false;
             }
         }
 
@@ -179,7 +187,8 @@ namespace WebApi.Services.Instance
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex, $"Delete Fail : {ex.Message}");
+                return false;
             }
         }
     }
