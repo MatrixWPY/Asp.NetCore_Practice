@@ -1,0 +1,81 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.IO;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebApi.Middlewares
+{
+    /// <summary>
+    /// API傳出參數記錄
+    /// </summary>
+    public class LogResponseMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
+        /// <param name="loggerFactory"></param>
+        public LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        {
+            _next = next;
+            _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
+            _logger = loggerFactory.CreateLogger<LogResponseMiddleware>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task Invoke(HttpContext context)
+        {
+            var originalBodyStream = context.Response.Body;
+            await using var responseBody = _recyclableMemoryStreamManager.GetStream();
+            context.Response.Body = responseBody;
+
+            // 流入 pipeline
+            await _next(context);
+            // 流出 pipeline
+
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            var responseBodyTxt = await new StreamReader(context.Response.Body).ReadToEndAsync();
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originalBodyStream);
+
+            // 保存傳出參數資訊
+            _logger.LogInformation(
+                    $"LogId={(string)context.Items["ApiLogId"]} , " +
+                    $"ResponseStatus={context.Response.StatusCode} , " +
+                    $"ResponseHeader={{{GetHeaders(context.Response.Headers)}}} , " +
+                    $"ResponseBody={responseBodyTxt}");
+        }
+
+        private static string GetHeaders(IHeaderDictionary headers)
+        {
+            return string.Join(' ', headers.Select(e => $"{e.Key}:{e.Value}"));
+        }
+    }
+
+    /// <summary>
+    /// 建立 Extension 將此 LogResponseMiddleware 加入 HTTP pipeline
+    /// </summary>
+    public static class LogResponseMiddlewareExtensions
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseLogResponseMiddleware(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<LogResponseMiddleware>();
+        }
+    }
+}

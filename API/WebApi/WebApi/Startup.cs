@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using WebApi.Commands.Instance;
 using WebApi.Commands.Interface;
+using WebApi.Middlewares;
 using WebApi.Services.Instance;
 using WebApi.Services.Interface;
 
@@ -97,6 +98,14 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            #region 癘魁肚把计
+            app.UseLogRequestMiddleware();
+            #endregion
+
+            #region 癘魁肚把计
+            app.UseLogResponseMiddleware();
+            #endregion
 
             app.UseAuthorization();
 
