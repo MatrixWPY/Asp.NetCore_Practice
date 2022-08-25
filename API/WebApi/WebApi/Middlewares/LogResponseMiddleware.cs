@@ -46,8 +46,6 @@ namespace WebApi.Middlewares
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             var responseBodyTxt = await new StreamReader(context.Response.Body).ReadToEndAsync();
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
-            await responseBody.CopyToAsync(originalBodyStream);
 
             // 保存傳出參數資訊
             _logger.LogInformation(
@@ -55,6 +53,9 @@ namespace WebApi.Middlewares
                     $"ResponseStatus={context.Response.StatusCode} , " +
                     $"ResponseHeader={{{GetHeaders(context.Response.Headers)}}} , " +
                     $"ResponseBody={responseBodyTxt}");
+
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originalBodyStream);
         }
 
         private static string GetHeaders(IHeaderDictionary headers)

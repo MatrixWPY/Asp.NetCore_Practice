@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using WebApi.Commands.Instance;
 using WebApi.Commands.Interface;
 using WebApi.Middlewares;
@@ -40,7 +42,14 @@ namespace WebApi
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                    .AddJsonOptions(opt =>
+                    {
+                        //取消預設JsonNamingPolicy.CamelCase
+                        opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+                        //維持原字元編碼
+                        opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                    });
 
             services.Configure<ApiBehaviorOptions>(opt =>
             {
