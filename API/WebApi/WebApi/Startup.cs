@@ -45,9 +45,11 @@ namespace WebApi
             services.AddControllers()
                     .AddJsonOptions(opt =>
                     {
-                        //取消預設JsonNamingPolicy.CamelCase
+                        // 名稱忽略大小寫
+                        opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                        // 序列化命名規則
                         opt.JsonSerializerOptions.PropertyNamingPolicy = null;
-                        //維持原字元編碼
+                        // 維持原字元編碼
                         opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
                     });
 
