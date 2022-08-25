@@ -16,18 +16,18 @@ namespace WebApi.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
-        private readonly ILogger _logger;
+        private readonly ILogger<LogRequestMiddleware> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        /// <param name="loggerFactory"></param>
-        public LogRequestMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        /// <param name="logger"></param>
+        public LogRequestMiddleware(RequestDelegate next, ILogger<LogRequestMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
             _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
-            _logger = loggerFactory.CreateLogger<LogRequestMiddleware>();
         }
 
         /// <summary>
