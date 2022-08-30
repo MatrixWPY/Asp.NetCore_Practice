@@ -126,16 +126,20 @@ namespace WebApi
             });
 
             #region 使用SwaggerUI
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            var isOpenSwagger = Convert.ToBoolean(Configuration["IsOpenSwagger"]);
+            if (isOpenSwagger)
             {
-                c.SwaggerEndpoint(
-                    // url: 需配合 SwaggerDoc 的 name。 "/swagger/{SwaggerDoc name}/swagger.json"
-                    url: "/swagger/v1/swagger.json",
-                    // name: 用於 Swagger UI 右上角選擇不同版本的 SwaggerDocument 顯示名稱使用。
-                    name: "API Document V1"
-                );
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint(
+                        // url: 需配合 SwaggerDoc 的 name。 "/swagger/{SwaggerDoc name}/swagger.json"
+                        url: "/swagger/v1/swagger.json",
+                        // name: 用於 Swagger UI 右上角選擇不同版本的 SwaggerDocument 顯示名稱使用。
+                        name: "API Document V1"
+                    );
+                });
+            }
             #endregion
         }
     }
